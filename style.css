@@ -169,10 +169,13 @@ footer .footer-logo {
   margin: 0;
 }
 
-#certificado .certificate-info { grid-template-columns: minmax(180px, .8fr) 1.4fr; }
-.certificate-hours { display:grid; justify-items:center; align-content:center; border-right:1px solid #ffffff60; }
-.certificate-hours strong { font:700 clamp(5rem,10vw,9rem)/1 Outfit,Arial,sans-serif; color:var(--sun); }
-.certificate-hours span { font-weight:600; }
+#certificado .certificate-info { grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); }
+.certificate-preview { margin:0; padding:4% 3%; perspective:1050px; }
+.certificate-preview img {
+  display:block; width:100%; height:auto;
+  transform:rotateY(12deg) rotateX(5deg) rotateZ(-3deg);
+  box-shadow:1px 2px 0 #deded5, 2px 4px 0 #c1c4ba, 10px 20px 35px #132e2b65;
+}
 #certificado h2, .ticket-panel h2 { margin-bottom:16px; }
 #certificado p, .ticket-panel p { max-width:58ch; }
 #certificado a { text-underline-offset:4px; }
@@ -181,7 +184,7 @@ footer .footer-logo {
 .faq-layout { display:grid; grid-template-columns:1fr 1.6fr; gap:40px; }
 @media(max-width:760px){
   #certificado .certificate-info, .faq-layout { grid-template-columns:1fr; gap:24px; }
-  .certificate-hours { justify-items:start; border:0; }
+  .certificate-preview { width:min(100%,520px); justify-self:center; }
   .ticket-panel { flex-direction:column; align-items:flex-start; }
   .faq-layout h2 { margin-bottom:0; }
 }
