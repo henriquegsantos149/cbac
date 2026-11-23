@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content">
 <title>II CBAC | II Congresso Brasileiro de Áreas Contaminadas • Ambiental Pro</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -10,7 +10,10 @@
 <header>
 <nav class="wrap" aria-label="Navegação principal">
 <a href="#inicio" aria-label="CBAC, início"><img class="marca" src="assets/marca.webp" alt="CBAC"></a>
-<div class="links">
+<button class="menu-toggle" type="button" aria-label="Menu de navegação" aria-expanded="false" aria-controls="nav-links">
+  <span></span><span></span><span></span>
+</button>
+<div class="links" id="nav-links">
 <a href="#sobre">Sobre</a>
 <a href="#publico">Público-alvo</a>
 <a href="#programacao">Programação</a>
@@ -22,8 +25,8 @@
 </nav>
 </header>
 <main>
-<section id="inicio"><div class="wrap hero"><div><div class="issue">2ª edição <i></i> 15, 16 e 17 de dezembro · 17h às 21h</div><h1>II Congresso Brasileiro de <em>Áreas Contaminadas</em></h1><p>Áreas Contaminadas na Era da Inteligência Artificial: tecnologia, dados e decisões mais seguras</p><a class="btn" href="#programacao">Explorar programação ↓</a></div><form id="hero-form" class="hero-form" method="post" action="/api/interesse">
-<h2>Tenho interesse no II CBAC</h2>
+<section id="inicio"><div class="wrap hero"><div><div class="issue">2ª edição <i></i> 15, 16 e 17 de dezembro · 17h às 21h</div><h1>II Congresso Brasileiro de <em>Áreas Contaminadas</em></h1><p>Em três dias de palestras online, especialistas discutem como usar dados de solo e água e inteligência artificial para identificar a contaminação, avaliar quem está em risco e escolher como recuperar a área.</p></div><form id="hero-form" class="hero-form" method="post" action="/api/interesse">
+<h2 id="registration-title">Tenho interesse no II CBAC</h2>
 <label>Nome completo<input required name="nome" autocomplete="name" maxlength="150"></label>
 <label>E-mail<input required type="email" name="email" autocomplete="email" maxlength="254"></label>
 <label>WhatsApp com DDD<input required type="tel" name="telefone" autocomplete="tel" maxlength="22" placeholder="(11) 99999-9999"></label>
@@ -67,6 +70,34 @@
     <a href="https://wa.me/5521985047457?text=Ol%C3%A1%21%20Gostaria%20de%20saber%20como%20funciona%20a%20emiss%C3%A3o%20do%20certificado%20do%20II%20CBAC.">Consultar informações do certificado →</a></div>
   </div>
 </section>
+<section id="depoimentos" aria-labelledby="titulo-depoimentos">
+  <div class="wrap reviews-layout">
+    <div class="reviews-intro">
+      <h2 id="titulo-depoimentos">Quem participou conta</h2>
+      <p>Depoimentos de participantes de outros congressos da Ambiental Pro.</p>
+    </div>
+  <div class="review-window">
+    <div class="review-track">
+      <div class="review-group">
+        <div class="review-column"><img src="depoimentos/WhatsApp Image 2026-09-24 at 21.10.06 (1).webp" width="346" height="226" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 4"><img src="depoimentos/WhatsApp Image 2026-09-24 at 21.10.22 (1).webp" width="349" height="361" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 5"></div>
+        <div class="review-column"><img src="depoimentos/WhatsApp Image 2026-09-24 at 20.12.27 (1).webp" width="379" height="822" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 1"></div>
+        <div class="review-column"><img src="depoimentos/WhatsApp Image 2026-09-24 at 20.13.56 (1).webp" width="370" height="642" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 3"></div>
+        <div class="review-column"><img src="depoimentos/WhatsApp Image 2026-09-24 at 21.10.43 (1).webp" width="356" height="253" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 6"><img src="depoimentos/WhatsApp Image 2026-09-24 at 20.13.47 (1).webp" width="373" height="590" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 2"></div>
+        <div class="review-column"><img src="depoimentos/WhatsApp Image 2026-09-24 at 21.11.20 (1).webp" width="348" height="713" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 7"></div>
+        <div class="review-column"><img src="depoimentos/WhatsApp Image 2026-09-24 at 21.11.38 (1).webp" width="362" height="797" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 8"></div>
+      </div>
+      <div class="review-group" aria-hidden="true">
+        <div class="review-column"><img src="depoimentos/WhatsApp Image 2026-09-24 at 21.10.06 (1).webp" width="346" height="226" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 4"><img src="depoimentos/WhatsApp Image 2026-09-24 at 21.10.22 (1).webp" width="349" height="361" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 5"></div>
+        <div class="review-column"><img src="depoimentos/WhatsApp Image 2026-09-24 at 20.12.27 (1).webp" width="379" height="822" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 1"></div>
+        <div class="review-column"><img src="depoimentos/WhatsApp Image 2026-09-24 at 20.13.56 (1).webp" width="370" height="642" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 3"></div>
+        <div class="review-column"><img src="depoimentos/WhatsApp Image 2026-09-24 at 21.10.43 (1).webp" width="356" height="253" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 6"><img src="depoimentos/WhatsApp Image 2026-09-24 at 20.13.47 (1).webp" width="373" height="590" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 2"></div>
+        <div class="review-column"><img src="depoimentos/WhatsApp Image 2026-09-24 at 21.11.20 (1).webp" width="348" height="713" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 7"></div>
+        <div class="review-column"><img src="depoimentos/WhatsApp Image 2026-09-24 at 21.11.38 (1).webp" width="362" height="797" alt="Depoimento de participante de congresso da Ambiental Pro, imagem 8"></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
 <section id="ingressos"><div class="wrap"><h2>Ingressos para o II CBAC</h2>
 <p>A oficina está incluída no ingresso. Para participar, confirme sua presença no formulário de check-in.</p>
 <div class="ticket-options"><article class="ticket-option" id="ingresso-basico" hidden>
@@ -74,10 +105,11 @@
 <p class="ticket-price">R$ 147<small>,00</small></p>
 <ul><li>Palestras ao vivo em 15, 16 e 17 de dezembro</li><li>Oficina incluída mediante confirmação no check-in</li><li>Participação sem gravação</li></ul>
 <a class="ticket-cta" href="https://wa.me/5521985047457?text=Ol%C3%A1%21%20Tenho%20interesse%20no%20ingresso%20B%C3%A1sico%20do%20II%20CBAC%20por%20R%24%20147%2C00.">Quero o Básico</a>
-</article><article class="ticket-option">
+</article><article class="ticket-option ticket-featured">
+<span class="ticket-recording">Com gravação</span>
 <h3>Ingresso Completo</h3>
 <p class="ticket-price">R$ 197<small>,00</small></p>
-<ul><li>Palestras ao vivo em 15, 16 e 17 de dezembro</li><li>Oficina incluída mediante confirmação no check-in</li><li><strong>Acesso à gravação</strong></li></ul>
+<ul><li>Palestras ao vivo em 15, 16 e 17 de dezembro</li><li>Oficina incluída mediante confirmação no check-in</li></ul>
 <a class="ticket-cta" href="https://wa.me/5521985047457?text=Ol%C3%A1%21%20Tenho%20interesse%20no%20ingresso%20Com%20grava%C3%A7%C3%A3o%20do%20II%20CBAC%20por%20R%24%20197%2C00.">Quero o Completo</a>
 </article></div></div></section>
 <section id="faq"><div class="wrap faq-layout">
@@ -102,8 +134,50 @@
 </div>
 </div>
 </footer>
+<button type="button" id="registration-trigger" class="btn" aria-haspopup="dialog" aria-controls="registration-dialog">Inscreva-se</button>
+<dialog id="registration-dialog" aria-labelledby="registration-title">
+  <button type="button" class="registration-close" aria-label="Fechar formulário" autofocus>×</button>
+</dialog>
 <script>
 const interestForm = document.querySelector('#hero-form');
+const hero = interestForm.parentElement;
+const dialog = document.querySelector('#registration-dialog');
+const trigger = document.querySelector('#registration-trigger');
+const mobileLayout = matchMedia('(max-width: 760px), (max-width: 960px) and (max-height: 540px) and (pointer: coarse)');
+const menuButton = document.querySelector('.menu-toggle');
+const navigation = menuButton.closest('nav');
+function closeMenu() {
+  menuButton.setAttribute('aria-expanded', 'false');
+}
+menuButton.addEventListener('click', () => {
+  menuButton.setAttribute('aria-expanded', String(menuButton.getAttribute('aria-expanded') !== 'true'));
+});
+document.addEventListener('click', event => {
+  if (!navigation.contains(event.target) || event.target.closest('a')) closeMenu();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && menuButton.getAttribute('aria-expanded') === 'true') {
+    closeMenu();
+    menuButton.focus();
+  }
+});
+navigation.addEventListener('focusout', event => {
+  if (!navigation.contains(event.relatedTarget)) closeMenu();
+});
+mobileLayout.addEventListener('change', closeMenu);
+function positionRegistration() {
+  if (mobileLayout.matches) {
+    dialog.append(interestForm);
+  } else {
+    if (dialog.open) dialog.close();
+    hero.append(interestForm);
+  }
+}
+positionRegistration();
+mobileLayout.addEventListener('change', positionRegistration);
+trigger.addEventListener('click', () => dialog.showModal());
+dialog.querySelector('.registration-close').addEventListener('click', () => dialog.close());
+
 function atualizarArea() {
   const mostrar = interestForm.elements.graduacao.value === 'sim';
   document.querySelector('#campo-area').hidden = !mostrar;
