@@ -98,19 +98,19 @@
   </div>
   </div>
 </section>
-<section id="ingressos"><div class="wrap"><h2>Ingressos para o II CBAC</h2>
+<section id="ingressos"><div class="wrap"><h2 id="ticket-heading" tabindex="-1">Ingressos para o II CBAC</h2>
 <p>A oficina está incluída no ingresso. Para participar, confirme sua presença no formulário de check-in.</p>
 <div class="ticket-options"><article class="ticket-option" id="ingresso-basico" hidden>
 <h3>Ingresso Básico</h3>
 <p class="ticket-price">R$ 147<small>,00</small></p>
 <ul><li>Palestras ao vivo em 15, 16 e 17 de dezembro</li><li>Oficina incluída mediante confirmação no check-in</li><li>Participação sem gravação</li></ul>
-<a class="ticket-cta" href="https://pay.voompcreators.com.br/PwEcLCCIvnASmsy4/offer/LoHjl8">Quero o Básico</a>
+<button class="ticket-cta" type="button" data-checkout="https://pay.voompcreators.com.br/PwEcLCCIvnASmsy4/offer/LoHjl8">Quero o Básico</button>
 </article><article class="ticket-option ticket-featured">
 <span class="ticket-recording">Com gravação</span>
 <h3>Ingresso Completo</h3>
 <p class="ticket-price">R$ 197<small>,00</small></p>
 <ul><li>Palestras ao vivo em 15, 16 e 17 de dezembro</li><li>Oficina incluída mediante confirmação no check-in</li><li>Acesso à gravação das palestras</li></ul>
-<a class="ticket-cta" href="https://pay.voompcreators.com.br/PwEcLCCIvnASmsy4/offer/ySaNWa">Quero o Completo</a>
+<button class="ticket-cta" type="button" data-checkout="https://pay.voompcreators.com.br/PwEcLCCIvnASmsy4/offer/ySaNWa">Quero o Completo</button>
 </article></div></div></section>
 <section id="faq"><div class="wrap faq-layout">
   <h2>Perguntas frequentes</h2><div>
@@ -165,7 +165,10 @@ navigation.addEventListener('focusout', event => {
   if (!navigation.contains(event.relatedTarget)) closeMenu();
 });
 mobileLayout.addEventListener('change', closeMenu);
+let selectedTicket = null;
+let registrationConfirmed = false;
 function positionRegistration() {
+  if (dialog.open && selectedTicket) return;
   if (mobileLayout.matches) {
     dialog.append(interestForm);
   } else {
@@ -175,6 +178,24 @@ function positionRegistration() {
 }
 positionRegistration();
 mobileLayout.addEventListener('change', positionRegistration);
+dialog.addEventListener('close', () => {
+  if (dialog.open) return;
+  selectedTicket = null;
+  positionRegistration();
+});
+document.querySelectorAll('.ticket-cta').forEach(ticket => {
+  ticket.addEventListener('click', () => {
+    updateTicketAvailability();
+    if (ticket.closest('article').hidden) return;
+    if (registrationConfirmed) {
+      location.assign(ticket.dataset.checkout);
+      return;
+    }
+    selectedTicket = ticket;
+    dialog.append(interestForm);
+    dialog.showModal();
+  });
+});
 trigger.addEventListener('click', () => dialog.showModal());
 dialog.querySelector('.registration-close').addEventListener('click', () => dialog.close());
 
@@ -203,9 +224,22 @@ interestForm.addEventListener('submit', async event => {
     });
     const result = await response.json();
     if (!response.ok || !result.ok) throw new Error(result.error);
+    registrationConfirmed = true;
     interestForm.reset();
     atualizarArea();
-    status.textContent = 'Interesse cadastrado!';
+    status.textContent = 'Cadastro recebido!';
+    updateTicketAvailability();
+    if (dialog.open && selectedTicket && !selectedTicket.closest('article').hidden) {
+      location.assign(selectedTicket.dataset.checkout);
+      return;
+    }
+    if (dialog.open) dialog.close();
+    const heading = document.getElementById('ticket-heading');
+    heading.textContent = basicTicket.hidden ? 'Continue com o Ingresso Completo' : 'Escolha seu ingresso para o II CBAC';
+    heading.focus({ preventScroll: true });
+    document.getElementById('ingressos').scrollIntoView({
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+    });
   } catch (error) {
     status.textContent = error.message === 'Confira os dados informados.' ? error.message : 'Não foi possível enviar. Tente novamente em instantes.';
   } finally {
