@@ -206,8 +206,8 @@ navigation.addEventListener('focusout', event => {
 mobileLayout.addEventListener('change', closeMenu);
 let selectedTicket = null;
 let registrationConfirmed = false;
-function openCheckIn() {
-  const url = new URL('https://tally.so/r/xVY0R9');
+function openCheckout(ticket) {
+  const url = new URL(ticket.dataset.checkout);
   for (const key of utmKeys) {
     if (attribution[key]) url.searchParams.set(key, attribution[key]);
   }
@@ -234,7 +234,7 @@ document.querySelectorAll('.ticket-cta').forEach(ticket => {
     updateTicketAvailability();
     if (ticket.closest('article').hidden) return;
     if (registrationConfirmed) {
-      openCheckIn();
+      openCheckout(ticket);
       return;
     }
     selectedTicket = ticket;
@@ -296,7 +296,7 @@ interestForm.addEventListener('submit', async event => {
     status.textContent = 'Cadastro recebido!';
     updateTicketAvailability();
     if (dialog.open && selectedTicket && !selectedTicket.closest('article').hidden) {
-      openCheckIn();
+      openCheckout(selectedTicket);
       return;
     }
     if (dialog.open) {
@@ -322,7 +322,7 @@ function showTicketChoice() {
   const choices = document.querySelector('#ingressos .ticket-options').cloneNode(true);
   choices.querySelectorAll('[id]').forEach(element => element.removeAttribute('id'));
   choices.querySelectorAll('.ticket-cta').forEach(button => {
-    button.addEventListener('click', openCheckIn);
+    button.addEventListener('click', () => openCheckout(button));
   });
   document.getElementById('ticket-dialog-options').replaceChildren(choices);
   document.getElementById('ticket-dialog-title').textContent = basicTicket.hidden
