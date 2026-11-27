@@ -145,6 +145,14 @@ fbq('trackSingle','1373287802810243','PageView');
 <dialog id="registration-dialog" aria-labelledby="registration-title">
   <button type="button" class="registration-close" aria-label="Fechar formulário" autofocus>×</button>
 </dialog>
+<dialog id="ticket-dialog" aria-labelledby="ticket-dialog-title">
+  <button type="button" class="registration-close" aria-label="Fechar escolha de ingressos" autofocus>×</button>
+  <div class="ticket-dialog-content">
+    <h2 id="ticket-dialog-title">Escolha seu ingresso para o II CBAC</h2>
+    <p>Cadastro recebido! Escolha abaixo como quer participar.</p>
+    <div id="ticket-dialog-options"></div>
+  </div>
+</dialog>
 <script>
 const interestForm = document.querySelector('#hero-form');
 const phoneInput = interestForm.elements.telefone;
@@ -253,8 +261,11 @@ interestForm.addEventListener('submit', async event => {
   const button = interestForm.querySelector('button');
   const status = interestForm.querySelector('output');
   if (button.disabled) return;
+  const buttonLabel = button.textContent;
   button.disabled = true;
-  status.textContent = 'Enviando…';
+  button.setAttribute('aria-busy', 'true');
+  button.innerHTML = '<span class="button-spinner" aria-hidden="true"></span><span>Enviando…</span>';
+  status.textContent = '';
   try {
     const response = await fetch(interestForm.action, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -267,9 +278,11 @@ interestForm.addEventListener('submit', async event => {
       error.code = result.code;
       throw error;
     }
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: 'cbac_lead', form_id: 'hero-form' });
-    if (typeof window.fbq === 'function') window.fbq('trackSingle', '1373287802810243', 'Lead');
+    try {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'cbac_lead', form_id: 'hero-form' });
+      if (typeof window.fbq === 'function') window.fbq('trackSingle', '1373287802810243', 'Lead');
+    } catch { /* A confirmação do cadastro não depende dos serviços de rastreamento. */ }
     registrationConfirmed = true;
     interestForm.reset();
     atualizarArea();
@@ -279,28 +292,48 @@ interestForm.addEventListener('submit', async event => {
       location.assign(selectedTicket.dataset.checkout);
       return;
     }
-    if (dialog.open) dialog.close();
-    const heading = document.getElementById('ticket-heading');
-    heading.textContent = basicTicket.hidden ? 'Continue com o Ingresso Completo' : 'Escolha seu ingresso para o II CBAC';
-    heading.focus({ preventScroll: true });
-    document.getElementById('ingressos').scrollIntoView({
-      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
-    });
+    if (dialog.open) {
+      // Aguarda a devolução do foco e a reposição do formulário antes de navegar.
+      dialog.addEventListener('close', showTicketChoice, { once: true });
+      dialog.close();
+    } else {
+      showTicketChoice();
+    }
   } catch (error) {
     const publicErrors = ['Confira os dados informados.', 'Cadastro temporariamente indisponível.', 'Não foi possível concluir o cadastro.'];
     status.textContent = publicErrors.includes(error.message) ? error.message : 'Não foi possível enviar. Tente novamente em instantes.';
     if (/^(?:ACTIVE|MAKE)_[A-Z_0-9]+$/.test(error.code || '')) status.textContent += ' Código: ' + error.code + '.';
   } finally {
     button.disabled = false;
+    button.removeAttribute('aria-busy');
+    button.textContent = buttonLabel;
   }
 });
 const basicTicket = document.getElementById('ingresso-basico');
+function showTicketChoice() {
+  updateTicketAvailability();
+  const choices = document.querySelector('#ingressos .ticket-options').cloneNode(true);
+  choices.querySelectorAll('[id]').forEach(element => element.removeAttribute('id'));
+  choices.querySelectorAll('.ticket-cta').forEach(button => {
+    button.addEventListener('click', () => location.assign(button.dataset.checkout));
+  });
+  document.getElementById('ticket-dialog-options').replaceChildren(choices);
+  document.getElementById('ticket-dialog-title').textContent = basicTicket.hidden
+    ? 'Continue com o Ingresso Completo' : 'Escolha seu ingresso para o II CBAC';
+  const ticketDialog = document.getElementById('ticket-dialog');
+  if (!ticketDialog.open) ticketDialog.showModal();
+}
+document.querySelector('#ticket-dialog .registration-close').addEventListener('click', () => {
+  document.getElementById('ticket-dialog').close();
+});
 const basicTicketDeadline = Date.parse('2026-12-15T00:00:00-03:00');
 let ticketTimer;
 function updateTicketAvailability() {
   clearTimeout(ticketTimer);
   const remaining = basicTicketDeadline - Date.now();
   basicTicket.hidden = remaining <= 0;
+  const modalBasic = document.querySelector('#ticket-dialog .ticket-option:not(.ticket-featured)');
+  if (modalBasic) modalBasic.hidden = basicTicket.hidden;
   if (remaining > 0) {
     ticketTimer = setTimeout(updateTicketAvailability, Math.min(remaining, 86400000));
   }
