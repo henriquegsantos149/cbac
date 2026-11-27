@@ -153,7 +153,8 @@ fbq('trackSingle','1373287802810243','PageView');
     <div id="ticket-dialog-options"></div>
   </div>
 </dialog>
-<script>
+<script type="module">
+import { readUTMs, utmKeys } from './lib/attribution.js';
 const interestForm = document.querySelector('#hero-form');
 const phoneInput = interestForm.elements.telefone;
 function formatPhone() {
@@ -206,7 +207,11 @@ mobileLayout.addEventListener('change', closeMenu);
 let selectedTicket = null;
 let registrationConfirmed = false;
 function openCheckIn() {
-  location.assign('https://tally.so/r/xVY0R9');
+  const url = new URL('https://tally.so/r/xVY0R9');
+  for (const key of utmKeys) {
+    if (attribution[key]) url.searchParams.set(key, attribution[key]);
+  }
+  location.assign(url.href);
 }
 function positionRegistration() {
   if (dialog.open && selectedTicket) return;
@@ -251,12 +256,11 @@ function atualizarArea() {
 interestForm.addEventListener('change', atualizarArea);
 window.addEventListener('pageshow', atualizarArea);
 atualizarArea();
-const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 let attribution = {};
-try { attribution = JSON.parse(sessionStorage.getItem('cbac_utm') || '{}') || {}; } catch {}
-const campaignParams = new URLSearchParams(location.search);
-if (utmKeys.some(key => campaignParams.has(key))) {
-  attribution = Object.fromEntries(utmKeys.map(key => [key, (campaignParams.get(key) || '').slice(0, 254)]));
+try { attribution = readUTMs(Object.entries(JSON.parse(sessionStorage.getItem('cbac_utm') || '{}') || {})); } catch {}
+const campaignParams = readUTMs(new URLSearchParams(location.search));
+if (Object.keys(campaignParams).length) {
+  attribution = campaignParams;
   try { sessionStorage.setItem('cbac_utm', JSON.stringify(attribution)); } catch {}
 }
 interestForm.addEventListener('submit', async event => {

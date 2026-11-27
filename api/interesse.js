@@ -1,3 +1,5 @@
+import { readUTMs, utmKeys } from '../lib/attribution.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
   const { nome, email, telefone, graduacao, area } = req.body || {};
@@ -20,8 +22,9 @@ export default async function handler(req, res) {
         data_inscricao: new Date().toISOString(),
         tag: '[C2][CBAC] Leads Trackeamento'
       };
-      for (const name of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) {
-        payload[name] = typeof req.body[name] === 'string' ? req.body[name].trim().slice(0, 254) : '';
+      const attribution = readUTMs(Object.entries(req.body));
+      for (const name of utmKeys) {
+        payload[name] = attribution[name] || '';
       }
       const response = await fetch(url, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
