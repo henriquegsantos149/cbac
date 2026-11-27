@@ -289,7 +289,7 @@ interestForm.addEventListener('submit', async event => {
   } catch (error) {
     const publicErrors = ['Confira os dados informados.', 'Cadastro temporariamente indisponível.', 'Não foi possível concluir o cadastro.'];
     status.textContent = publicErrors.includes(error.message) ? error.message : 'Não foi possível enviar. Tente novamente em instantes.';
-    if (/^ACTIVE_[A-Z_0-9]+$/.test(error.code || '')) status.textContent += ' Código: ' + error.code + '.';
+    if (/^(?:ACTIVE|MAKE)_[A-Z_0-9]+$/.test(error.code || '')) status.textContent += ' Código: ' + error.code + '.';
   } finally {
     button.disabled = false;
   }
