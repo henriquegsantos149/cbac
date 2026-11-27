@@ -262,7 +262,11 @@ interestForm.addEventListener('submit', async event => {
         ...Object.fromEntries(utmKeys.map(key => [key, typeof attribution[key] === 'string' ? attribution[key] : ''])) })
     });
     const result = await response.json();
-    if (!response.ok || !result.ok) throw new Error(result.error);
+    if (!response.ok || !result.ok) {
+      const error = new Error(result.error);
+      error.code = result.code;
+      throw error;
+    }
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: 'cbac_lead', form_id: 'hero-form' });
     if (typeof window.fbq === 'function') window.fbq('trackSingle', '1373287802810243', 'Lead');
@@ -283,7 +287,9 @@ interestForm.addEventListener('submit', async event => {
       behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
     });
   } catch (error) {
-    status.textContent = error.message === 'Confira os dados informados.' ? error.message : 'Não foi possível enviar. Tente novamente em instantes.';
+    const publicErrors = ['Confira os dados informados.', 'Cadastro temporariamente indisponível.', 'Não foi possível concluir o cadastro.'];
+    status.textContent = publicErrors.includes(error.message) ? error.message : 'Não foi possível enviar. Tente novamente em instantes.';
+    if (/^ACTIVE_[A-Z_0-9]+$/.test(error.code || '')) status.textContent += ' Código: ' + error.code + '.';
   } finally {
     button.disabled = false;
   }
