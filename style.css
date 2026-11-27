@@ -193,7 +193,7 @@ footer .footer-logo {
 }
 #certificado h2, .ticket-panel h2 { margin-bottom:16px; }
 #certificado p, .ticket-panel p { max-width:58ch; }
-#certificado a { text-underline-offset:4px; }
+#certificado .certificate-info > div > p:last-child { margin-bottom:0; }
 .ticket-panel { display:flex; justify-content:space-between; align-items:center; gap:32px; border-block:2px solid var(--clay); padding-block:clamp(30px,5vw,64px); }
 .ticket-panel p { margin:0; }
 .faq-layout { display:grid; grid-template-columns:1fr 1.6fr; gap:40px; }
